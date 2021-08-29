@@ -4,26 +4,24 @@ const Modal = {
   },
 };
 
-const transactions = [
-  {
-    description: "Luz",
-    amount: -50000,
-    date: "23/01/2021",
-  },
-  {
-    description: "WebSite",
-    amount: 500000,
-    date: "23/01/2021",
-  },
-  {
-    description: "Internet",
-    amount: -20000,
-    date: "23/01/2021",
-  },
-];
-
 const Transaction = {
-  all: transactions,
+  all: [
+    {
+      description: "Luz",
+      amount: -50000,
+      date: "23/01/2021",
+    },
+    {
+      description: "WebSite",
+      amount: 500000,
+      date: "23/01/2021",
+    },
+    {
+      description: "Internet",
+      amount: -20000,
+      date: "23/01/2021",
+    },
+  ],
   add(transaction) {
     Transaction.all.push(transaction);
     App.reload();
@@ -90,6 +88,14 @@ const DOM = {
 };
 
 const Utils = {
+  formatAmount(value) {
+    value = Number(value) * 100;
+    return value;
+  },
+  formatDate(date) {
+    const splittedDate = date.split("-");
+    return `${splittedDate[2]}/${splittedDate[1]}/${splittedDate[0]}`;
+  },
   formatCurrency(value) {
     const signal = Number(value) < 0 ? "-" : "";
     value = String(value).replace(/\D/g, "");
@@ -101,6 +107,53 @@ const Utils = {
     });
 
     return signal + value;
+  },
+};
+
+const Form = {
+  description: document.querySelector("input#description"),
+  amount: document.querySelector("input#amount"),
+  date: document.querySelector("input#date"),
+  getValues() {
+    return {
+      description: Form.description.value,
+      amount: Form.amount.value,
+      date: Form.date.value,
+    };
+  },
+  validateField() {
+    const {description, amount, date} = Form.getValues();
+    if (description.trim() === "" || amount.trim() === "" || date.trim() === "")
+      throw new Error("Por favor, preencha todos os campos.");
+  },
+  formatValues() {
+    let {description, amount, date} = Form.getValues();
+
+    amount = Utils.formatAmount(amount);
+    date = Utils.formatDate(date);
+
+    return {
+      description,
+      amount,
+      date,
+    };
+  },
+  clearFields() {
+    Form.description.value = "";
+    Form.amount.value = "";
+    Form.date.value = "";
+  },
+  submit(event) {
+    event.preventDefault();
+    try {
+      Form.validateField(); // verifica se os campos estão validos
+      const transaction = Form.formatValues(); //pega os valores formatados
+      Transaction.add(transaction); // adiciona a transação
+      Form.clearFields(); // limpa os campos de input
+      Modal.openOrClose(); // fecha o modal
+    } catch (error) {
+      alert("Error: " + error.message);
+    }
   },
 };
 
