@@ -4,24 +4,21 @@ const Modal = {
   },
 };
 
+const Storage = {
+  get() {
+    // retorna um array com os dados que estão no localStorage ou retorna um array vazio
+    return JSON.parse(localStorage.getItem("dev.finances:transaction")) || [];
+  },
+  set(transactions) {
+    localStorage.setItem(
+      "dev.finances:transaction",
+      JSON.stringify(transactions),
+    );
+  },
+};
+
 const Transaction = {
-  all: [
-    {
-      description: "Luz",
-      amount: -50000,
-      date: "23/01/2021",
-    },
-    {
-      description: "WebSite",
-      amount: 500000,
-      date: "23/01/2021",
-    },
-    {
-      description: "Internet",
-      amount: -20000,
-      date: "23/01/2021",
-    },
-  ],
+  all: Storage.get(),
   add(transaction) {
     Transaction.all.push(transaction);
     App.reload();
@@ -162,6 +159,7 @@ const App = {
   init() {
     Transaction.all.forEach(DOM.addTransaction);
     DOM.updateBalance();
+    Storage.set(Transaction.all);
   },
   reload() {
     DOM.clearTransactions();
