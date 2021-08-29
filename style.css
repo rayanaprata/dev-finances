@@ -117,10 +117,16 @@ header {
 
 /* ============== Table ============== */
 
-#data-table {
+#transaction {
   width: 100%;
+  display: block;
+  overflow-x: auto;
+}
+
+#data-table {
   border-spacing: 0 0.5rem;
   color: #969cb3;
+  width: 100%;
 }
 
 table thead tr th:first-child,
