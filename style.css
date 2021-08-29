@@ -12,6 +12,10 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 93.75%; /* 15px */
+}
+
 *::selection {
   background-color: #8bb37b;
   color: #fff;
@@ -46,6 +50,22 @@ h2 {
   margin-bottom: 0.8rem;
   color: var(--dark-blue);
   font-weight: 400;
+}
+
+/* ============== Links & Buttons ============== */
+
+a {
+  color: #49aa26;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #3dd705;
+}
+
+.button.new {
+  display: inline-block;
+  margin-bottom: 0.8rem;
 }
 
 /* ============== Header ============== */
@@ -108,6 +128,11 @@ table tbody tr td:first-child {
   border-radius: 0.25rem 0 0 0.25rem;
 }
 
+table thead tr th:last-child,
+table tbody tr td:last-child {
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+
 table thead th {
   background-color: #fff;
   font-weight: normal;
@@ -147,4 +172,20 @@ footer {
   padding: 4rem 0 2rem;
   color: var(--dark-blue);
   opacity: 0.6;
+}
+
+/* ============== Responsive ============== */
+
+@media (min-width: 800px) {
+  html {
+    font-size: 87.5%; /* 14px */
+  }
+
+  #balance {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* outra forma de usar:
+    grid-template-columns: repeat(3, 1fr); */
+    gap: 2rem;
+  }
 }
